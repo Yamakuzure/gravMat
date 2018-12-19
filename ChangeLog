@@ -1,0 +1,254 @@
+pwxLib Revision History
+-----------------------
+
+0.8.9 - 2018-12-13
+The library is a real library now, utilizes the meson+ninja build system, and has been moved to GitHub.
+Most of the old stuff has been ported and moderniced. The CCnfFileHandler is still missing, though.
+
+0.8.7 - 0.8.8 
+The exact history is sadly lost due to lack of time and a lot of refactoring, reordering and rewriting.
+
+0.8.6 - 2012-04-??
+* CCnfFileHandler.h: Fixed a memory leak - CCnfFileHandler::contInterface was not deleted.
+                     Fixed a bug that caused the removal of data flags from a file to remove all flags.
+* CMemRingFactory.h: Fixed a memory leak that could show up when the name map is used.
+* Args.h           : Fixed various issues.
+* Exception.h      : Renamed ctor arguments, the old names shadowed the public functions.
+* StreamHelpers.h  : Added to_float(), to_double(), to_int32() and to_int64().
+* tools/getrn      : Fixed a memory leak introduced with version 0.7.0.2.
+* tools/gravMat    : Saving is now done every minute or before a new gravitation calculation is needed.
+                     Units are no longer cleaned up unless a frame has been drawn.
+                     Added an option --dyncam to have the camera being moved dynamically towards the scene with the original
+                     distance being the maximum distance.
+
+
+0.8.5 - 2012-03-01
+* CCnfFileHandler.h: Fixed the sorting issue.
+                     Added the possibility to change the dataFlags of a configuration file on the fly.
+                     Cleaned up the API, it is no longer possible (and never was necessary) to have added/changed data to be
+                     sorted - the flags are responsible for that.
+                     Fixed some minor issues cppcheck moaned about.
+* CMemRingFactory.h: Eventually cleaned up some old code that made cppcheck to croak loudly and wasn't needed anyway.
+* Args.h           : min/max members renamed to minVal/maxVal, it is much clearer like that.
+* Exception.h      : Added default includes for this file to be usable stand-alone.
+* DefaultDefines.h : DefaultMutex.h: Some documentation corrections.
+                     Privatized Lockable::operator=, it is a serious error to try to assign an instance.
+* tools/gravMat    : Corrected the help text, had old WiP title.
+                     The rendering has been rewritten and is now a simple ray tracer.
+                     Fixed initial offset calculation and eventually got the shockwave mode right.
+                     Switched from blind values to kg/m (MKS system of units).
+                     Fixed the work loop, it never calculated collisions correctly after loading a later state.
+                     The window now refreshes after being minimized or overlapped, stats are now displayed fully everywhere.
+                     Finally got the maxZ calculation right and eventually silenced the moaning of cppcheck.
+                     Changed the colormap to use the new pwxLib component CWaveColor.
+                     Dust Spheres span fully around the masses now.
+                     Applied time scaling in a way the calculations can be stayed being done each second. Further the saving
+                     between cycles is possible now without losing information.
+* tools/mkst       : Corrected the help text, the default file extension is png now, not tif.
+
+
+0.8.3 - 2011-10-16
+* tools/gravMat    : Some fixes and corrections
+                     Added a new pause mode to pause the processing
+                     The rendering has been completely rewritten
+
+
+0.8.2 - 2011-10-07
+* CMemRingFactory.h: The interfaces now reassigns the currently handled item if the container size
+                     changed before the interface is reattached.
+* DefaultDefines.h : Added undefs plus warnings if min/max macros are found.
+                     Added M_PI_2l and M_PI_4l ifndef, MSVc++ doesn't know'em.
+* StreamHelpers.h  : makeTemp() now works with suffix under VisualC++, too.
+* tools/gravMat    : Added a third distribution mode --shockwave.
+                     Drawing of units has been completely rewritten.
+
+
+0.8.1 - 2011-09-30
+* pwxLib           : The pwxLib is now thread save, if used after defining PWX_THREADS. Either  by
+                     defining it before including the first pwxLib file or by using the -D option
+                     of gcc or /D option of MSVC++.
+* CCnfFileHandler.h: Added missing PWX_INLINE to the CFH exceptions dtors.
+                     Switched to MRInterface where possible and added container locks everywhere else
+                     to ensure thread safety as long as CFH is used.
+                     Added operator> to CConfigFile, CConfigGroup and CConfigData to be able to
+                     utilize the new sorting methods of MRF.
+* CMemRingFactory.h: Added missing PWX_INLINE to the MRF exceptions, CMemRing and CItem dtors.
+                     Optimized insertion of items to gain some speed.
+                     Added TMemRing<T>::disableTracking() to optionally disable reference tracking
+                     per Container to gain (lots of) speed and added big fat warnings about using it.
+                     Added the special cases of the previous and next items to the retrieval of
+                     items and data to speed up the performance of loops.
+                     Added TMemRing<T>::add_sorted() and TMemRing<T>::sort*_once() to allow for
+                     a sorted state after adding tons of items and to make sorting interruptible.
+                     Added TMemRingInterface<T> to allow multi-threaded access.
+                     Changed the renumbering of a memory ring from a recursive to a direct method. The
+                     recursive approach busted maximum recursion depth (mcount) on large containers.
+                     Optimized searching items by index number a bit.
+                     Rewrote interface getters to use the real id and name map instead of the shadowed
+                     (and empty!) ones.
+                     Fixed the workflow of root item change detection.
+                     Unified setCurrTo*() methods into setCurrToOrder().
+                     Added a safety check and "strayItem" exception to TItem<T>::insert().
+
+* CRandom.h        : From now on CRandom is derived from pwx::Lockable for thread safety reasons.
+* CSinCosTables.h  : From now on CSinCosTables is derived from pwx::Lockable for thread safety reasons.
+* Args.h           : addArgFloat/Double now uses correct limits instead of general int32_t.
+* DefaultDefines.h : Added pwx::Lockable, a class to inherit from adding MutEx functionality and
+                     pwx::Lock, a class to use Lockable objects locking them exception safe. (RAII)
+                     Fixed a typo, its "__GNUC__" not "_GNUC_"!
+                     Made cmath being included by default again. Not having it caused to many headaches!
+                     Added an object check to the Lock dtor and a tryLock() method to Lockable.
+                     Made Multi-Threading optional via PWX_THREADS macro and new internal/DefaultMutex.h
+                     Removed the default arguments from the 2D version of absDistance. They were too
+                     much of a source for bugs! (And those were very hard to detect...)
+                     Reverted pwx::Exception and its helper macros to local helper C-Strings, the static
+                     buffer is problematic pwx::Exception using objects shows up in more than one
+                     compilation unit.
+* Exception.h      : Added missing PWX_INLINE to ~Exception()
+                     Reverted pwx::Exception and its helper macros to local helper C-Strings, the static
+                     buffer is problematic pwx::Exception using objects shows up in more than one
+                     compilation unit.
+* MathHelpers.h    : Fixed a bug that could let getNormalizedDegree fail if an argument is an exact
+                     product of -360.0 and 2+.
+* StreamHelpers.h  : Added missing PWX_INLINE to adjLeft/Rigth shift operators
+                     Fixed a "bug" (thinking error) in forwardTo()
+* tools/mkst       : MakeSimplexTexture is now multi-threaded, which enhances rendering speed greatly.
+
+
+0.8.0 - 2011-07-14
+* pwxLib           : Added CCnfFileHandler, a system to open, create, manage and save configuration
+                     file with presets for Ini-, Config- and RC-files. The global instance is
+                     pwx::CFH.
+* Exception.h      : Added exception naming for simpler handling.
+* DefaultDefines.h : Unified PWX_THROW_FURTHER thanks to new exception naming method.
+                     Added rshl() and rshr() for rotating left and right shift.
+* StreamHelpers.h  : Added trim(), ltrim() and rtrim() for string references.
+                     Added cropShell() to free strings from shell variable representations.
+                     Added tabToSpace() to convert tabs into a variable number of spaces in strings.
+* CCnfFileHandler.h: First release
+* CMemRingFactory.h: Changed to use the new simplified PWX_THROW_FURTHER and added naming to mrf
+                     exceptions.
+                     added delItem() methods to TMemRing to get rid of data easily. Needed by CFH.
+                     added exists() methods to easily find out whether a specific container exists.
+                     added exists() methods to TMemRing, to find out whether a specific item
+                     exists.
+* CRandom.h        : Changed integer hash functions to return unsigned types.
+                     Added a 64 to 32 bit integer hash function.
+
+
+0.7.2 - 2011-04-07
+* pwxLib          : Overhauled (and somewhat corrected) the documentation. The documentation target
+                    should produce a more clear api documentation now.
+                    Cleared up some code.
+
+
+0.7.1 - 2011-03-28
+* pwxLib          : Added pwxArgs, a program argument parsing system in the
+                    namespace pwx::args, added by including <pwxLib/tools/Args.h>
+* CRandom.h       : Corrected issues with 32bit compilers, and a problem with random(int64_t)
+                    Finally got rid of the bug that made rndName() choke in very rare cases
+                    Added a security check to simplex noise to really really have a -1.0 to 1.0
+                    range.
+                    Changed the naming rules, the textanalyzer did not filter out www adresses.
+                    Added Filters to textAnalyzer.pl and applied a lot new rules.
+                    Fixed a bug that caused middle part rules to never be used.
+                    Returning std::string.c_str() from stack is not portable to VC++. Thus
+                    rndName is changed to return a malloc'd C-string now
+* CSinCosTables.h : Corrected issues with 32bit compilers.
+                    Output can be changed on the fly now, so iostream/StreamHelpers.h are no longer
+                    dependent on the output preprocessor macro.
+                    Changed pow() and round() to use the new gcc-msvc++-wrappers
+* Args.h          : First release
+* DefaultDefines.h: (Re-)Added includes, that are used everywhere
+                    Added stdint.h by Alexander Chemeris to provide int*_t types for
+                    Microsoft Visual C++ compilers.
+                    Added usage of new static char buffers in pwx::Exception to the macros
+                    PWX_THROW and PWX_THROW_FURTHER.
+* Exception.h     : Added static char buffers for information assembly
+* MathHelpers.h   : Some updates to compile with MS Visual C++ 2008
+                    Fixed two serious bugs:
+                    The first bug was an order issue in the single value version of
+                    pwx::MathHelpers::getNormalizedDegree, that caused the assertion to
+                    fail when called with an angle of exactly -360.0 degrees. The second
+                    bug was a comparision issue in the two value version, that caused
+                    undefined behaviour when called with a value of exactly 360.0 degrees.
+                    pow and round are now wrapped for MSVC++ compatibility.
+* StreamHelpers.h : Added stream formatters
+                    Fixed a bug that could cause readNextValue() to try to read empty fields (double
+                    seperator condition)
+                    Some updates for compatibility with MSVC++ 2008. open(), close() and strdup()
+                    are now wrappers for gcc-MSVC++-compatibility.
+                    Changed makeTemp() to work with MSVC++, too.
+                    Added forwarding for adj* and prototypes for their ostream operators
+                    Added to_string template for val->string functionality
+
+
+0.7.0 - 2010-11-19
+* pwxLib          : Added MRF (CMemRingFactory.h), the re-write of pwxMemRing
+                    Changed versioning: All parts reflect the library release version
+                    by major and minor number, and only increase their revision.
+                    Took some headers out of the internal folder and added them to
+                    the new tools folder. These are:
+                    DefaultDefines.h - Some helper macros and functions for comparisons,
+                                       math and type traits
+                    Exception.h      - The trace adding pwx base exception
+                    MathHelpers.h    - Some mathematical helper functions
+                    StreamHelpers.h  - Some helper functions for working with streams
+* CMemRingFactory : Initial public release
+* CRandom.h       : Changed the name generator (RNG.rndName()) to return const char *
+                    instead of producing long copy chains of ::std::string
+                    Added namelists for the analyzation of texts to gain better rules
+                    Added new rules, which state whether a 2-char-combo is allowed at
+                    the start, middle or the end of a word.
+                    Added a lot of new filters to the text analyzation tool to stamp out
+                    useless consonant olympics.
+* CSinCosTables.h : Added time tests to the test program, so that the user can see
+                    whether they would benefit from using SCT or not.
+* DefaultDefines.h: Math tools are now depending on the user to include <cmath> or
+                    <math.h> prior including this file.
+                    Added some type traits wrapping macros.
+* Documentation   : removed man file generation, as the output wasn't really helpful.
+* general         : Finally got rid of the prefixing underscores on most macros and
+                    defines.
+                    Changed all integers to use the definite types int32_t, uint32_t
+                    and int64_t. This and some additions fixed (hopefully all) issues
+                    with 32bit compilers.
+
+
+0.6.2 - 2010-07-13
+* pwxLib    : Added PWX_NO_*_INSTANCE defines with * being RNG or SCT to let
+              developers chose to not automatically instantiate the respective
+              class.
+* getrn     : Randomness can now be completely shut off, makeing getrn working
+              completly pseudo random - thus producing the same name(s) with
+              every call when used the same program arguments
+* mkst      : Added file extension argument, the user can now decide to use other
+              image formats but TIFF.
+              Added color border control, the high and low borders are no longer
+              fixed to the simplex noise range.
+              Added batch mode, the program can now be used to write textures
+              without instanciating a GUI.
+* docs      : Doxygen will no longer analyze the sources of the test programs, as
+              this is not necessary for the library documentation.
+
+
+0.6.1 - 2010-06-11
+* pwxLib    : Changed the Makefile to allow to compile the tools without
+              the need to first install the library
+* mkst      : Added sequences and modifier options for z and w coordinates
+
+
+0.6.0 - 2010-05-28
+* CRandom.h : RNG.rndName has new versions which take individual maximum
+              numbers of characters, syllables and parts to generate.
+* pwxLib    : Various additions to make linkers happy.
+* tools     : Two first pwxLib based tools have been added:
+              getRandomName      - command line tool to generate random names
+              makeSimplexTexture - SDL based tool to generate Textures and
+                                   bump maps out of Simplex Noise.
+              See Makefile for more information
+
+
+0.5.5 - 2010-05-16
+* Initial public release
+
