@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="gravMat" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="..\..\gravMat" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\" />
+				<Option object_output=".\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="--halfX --halfY --file todos/test_explo.dat --outfile todos/test_explo_%06d.png --explode --dyncam" />
+				<Compiler>
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wredundant-decls" />
+					<Add option="-pedantic" />
+					<Add option="-pg" />
+					<Add option="-g" />
+					<Add option="-O0 -ggdb" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg" />
+				</Linker>
+			</Target>
+			<Target title="Effective C++">
+				<Option output="..\..\gravMat" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\" />
+				<Option object_output=".\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="--halfX --halfY --file todos/test_explo.dat --outfile todos/test_explo_%06d.png --explode --dyncam" />
+				<Compiler>
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wredundant-decls" />
+					<Add option="-Weffc++" />
+					<Add option="-pedantic" />
+					<Add option="-pg" />
+					<Add option="-g" />
+					<Add option="-O0 -ggdb" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="..\..\gravMat" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\" />
+				<Option object_output=".\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="--threads 16" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-march=native" />
+					<Add option="-DNDEBUG" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+			<Target title="Graphite">
+				<Option output="..\..\gravMat" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\" />
+				<Option object_output=".\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="--halfX --halfY --file todos/test_explo.dat --outfile todos/test_explo_%06d.png --explode --dyncam" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-march=native" />
+					<Add option="-floop-interchange" />
+					<Add option="-fgraphite-identity" />
+					<Add option="-ftree-loop-distribution" />
+					<Add option="-floop-parallelize-all" />
+					<Add option="-floop-strip-mine" />
+					<Add option="-floop-block" />
+					<Add option="-DNDEBUG" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+			<Target title="WinDebug">
+				<Option output="..\..\gravMat" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\" />
+				<Option object_output=".\" />
+				<Option type="1" />
+				<Option compiler="msvc10" />
+				<Option parameters="--threads 8 --width 300 --height 300 --halfX --halfY --file test_normal.dat" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Option projectLinkerOptionsRelation="1" />
+				<Compiler>
+					<Add option="/MTd" />
+					<Add option="/TP" />
+					<Add option="/arch:SSE2" />
+					<Add option="/fp:precise" />
+					<Add option="/EHc" />
+					<Add option="/EHs" />
+					<Add option="/Od" />
+					<Add option="/W3" />
+					<Add option="/Zc:auto" />
+					<Add option="/Zi" />
+					<Add option="/DPWXLIB_DEBUG" />
+					<Add option="/DSFML_DYNAMIC" />
+					<Add option="/DPWX_THREADS" />
+					<Add directory="D:\PrydeWorX\pwxLib\" />
+					<Add directory="D:\SFML-1.6\include" />
+				</Compiler>
+				<Linker>
+					<Add option="/DEBUG" />
+					<Add option="/FORCE:Multiple" />
+					<Add library="sfml-system-d.lib" />
+					<Add library="sfml-window-d.lib" />
+					<Add library="sfml-graphics-d.lib" />
+					<Add directory="D:\SFML-1.6\lib" />
+				</Linker>
+			</Target>
+			<Target title="WinRelease">
+				<Option output="..\..\gravMat" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\" />
+				<Option object_output=".\" />
+				<Option type="1" />
+				<Option compiler="msvc10" />
+				<Option parameters="--threads 16" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Option projectLinkerOptionsRelation="1" />
+				<Compiler>
+					<Add option="/MT" />
+					<Add option="/TP" />
+					<Add option="/arch:SSE2" />
+					<Add option="/GA" />
+					<Add option="/fp:precise" />
+					<Add option="/EHc" />
+					<Add option="/EHs" />
+					<Add option="/Ox" />
+					<Add option="/W3" />
+					<Add option="/Zc:auto" />
+					<Add option="/DNDEBUG" />
+					<Add option="/DSFML_DYNAMIC" />
+					<Add option="/DPWX_THREADS" />
+					<Add directory="D:\PrydeWorX\pwxLib\" />
+					<Add directory="D:\SFML-1.6\include" />
+				</Compiler>
+				<Linker>
+					<Add library="sfml-system.lib" />
+					<Add library="sfml-window.lib" />
+					<Add library="sfml-graphics.lib" />
+					<Add directory="D:\SFML-1.6\lib" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++0x" />
+			<Add option="-Wextra" />
+			<Add option="-Wall" />
+			<Add option="-I../../../" />
+			<Add option="-DPWX_THREADS" />
+		</Compiler>
+		<Linker>
+			<Add library="sfml-graphics" />
+			<Add library="sfml-system" />
+			<Add library="sfml-window" />
+		</Linker>
+		<Unit filename="Makefile" />
+		<Unit filename="colormap.h" />
+		<Unit filename="consoleui.cpp" />
+		<Unit filename="consoleui.h" />
+		<Unit filename="dustpixel.h" />
+		<Unit filename="environment.cpp" />
+		<Unit filename="environment.h" />
+		<Unit filename="icon.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="main.h" />
+		<Unit filename="masspixel.h" />
+		<Unit filename="matter.cpp" />
+		<Unit filename="matter.h" />
+		<Unit filename="sfmlui.cpp" />
+		<Unit filename="sfmlui.h" />
+		<Unit filename="universe.h" />
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<debugger>
+				<search_path add="../../src" />
+				<search_path add="../../../tools" />
+				<search_path add="/home/sed/tmp/SFML-1.6/src/SFML/System" />
+				<remote_debugging target="Debug">
+					<options conn_type="0" serial_baud="115200" additional_cmds="target remote | /usr/lib64/valgrind/../../bin/vgdb" />
+				</remote_debugging>
+				<remote_debugging target="Effective C++">
+					<options conn_type="0" serial_baud="115200" additional_cmds="target remote | /usr/lib64/valgrind/../../bin/vgdb" />
+				</remote_debugging>
+				<remote_debugging target="WinRelease">
+					<options conn_type="0" serial_baud="115200" additional_cmds="target remote | /usr/lib64/valgrind/../../bin/vgdb" />
+				</remote_debugging>
+			</debugger>
+			<lib_finder disable_auto="1" />
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
