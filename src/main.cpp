@@ -81,74 +81,62 @@
 #include "sfmlui.h"  // singled out, has only relevance to main.cpp!
 #include "consoleui.h" // only main has to put messages onto the console with these functions
 
-#include <pwxLib/tools/Exception.h>
+#include <pwxCException.h>
 
-int main ( int argc, char** argv )
-{
-  int32_t result = EXIT_SUCCESS;
-  ENVIRONMENT * env = NULL;
+int main ( int argc, char** argv ) {
+    int32_t result = EXIT_SUCCESS;
+    ENVIRONMENT* env = NULL;
 
-  try
-    {
-      srand(static_cast<uint32_t>(time(NULL)));
-      env = new ENVIRONMENT(rand() % 25000 + 25000);
-      result = processArguments(env, argc, argv);
-    }
-  catch (std::bad_alloc &e)
-    {
-      cerr << "ERROR : Unable to create environment!" << endl;
-      cerr << "REASON: \"" << e.what() << "\"" << endl;
-      env = NULL;
-      result = EXIT_FAILURE;
+    try {
+        srand( static_cast<uint32_t>( time( NULL ) ) );
+        env = new ENVIRONMENT( rand() % 25000 + 25000 );
+        result = processArguments( env, argc, argv );
+    } catch ( std::bad_alloc& e ) {
+        cerr << "ERROR : Unable to create environment!" << endl;
+        cerr << "REASON: \"" << e.what() << "\"" << endl;
+        env = NULL;
+        result = EXIT_FAILURE;
     }
 
-  try
-    {
-      if ((EXIT_SUCCESS == result) && env && env->doWork)
-        {
-          // A : Initialize Display:
-          result = initSFML(env);
+    try {
+        if ( ( EXIT_SUCCESS == result ) && env && env->doWork ) {
+            // A : Initialize Display:
+            result = initSFML( env );
 
-          // B : Enter WorkLoop:
-          if (EXIT_SUCCESS == result)
-            result = workLoop(env);
+            // B : Enter WorkLoop:
+            if ( EXIT_SUCCESS == result )
+                result = workLoop( env );
         } // End of there is work to be done
 
-      // Clean out environment
-      if (env) delete (env);
-      env = NULL;
-    }
-  catch (pwx::Exception &e)
-    {
-      cerr << "\n =============================== " << endl;
-      cerr << "Uncaught mrf exception \"" << e.name() << "\" from " << e.where() << endl;
-      cerr << "Message    : " << e.what() << endl;
-      cerr << "Description: " << e.desc() << endl;
-      cerr << "Full Func  : " << e.pfunc() << endl;
-      cerr << " ------------------------------- " << endl;
-      cerr << "Trace:" << endl;
-      cerr << e.trace() << endl;
-      cerr << " =============================== " << endl;
-      result = EXIT_FAILURE;
-    }
-  catch (std::exception &e)
-    {
-      // Oh no...
-      cerr << "\n =============================== " << endl;
-      cerr << "Uncaught std exception : \"" << e.what() << "\"" << endl;
-      cerr << " =============================== " << endl;
-      result = EXIT_FAILURE;
-    }
-  catch (...)
-    {
-      cerr << "\n =============================== " << endl;
-      cerr << "PANIC! Unknown exception encountered!" << endl;
-      cerr << " =============================== " << endl;
-      result = EXIT_FAILURE;
+        // Clean out environment
+        if ( env ) delete ( env );
+        env = NULL;
+    } catch ( pwx::Exception& e ) {
+        cerr << "\n =============================== " << endl;
+        cerr << "Uncaught mrf exception \"" << e.name() << "\" from " << e.where() << endl;
+        cerr << "Message    : " << e.what() << endl;
+        cerr << "Description: " << e.desc() << endl;
+        cerr << "Full Func  : " << e.pfunc() << endl;
+        cerr << " ------------------------------- " << endl;
+        cerr << "Trace:" << endl;
+        cerr << e.trace() << endl;
+        cerr << " =============================== " << endl;
+        result = EXIT_FAILURE;
+    } catch ( std::exception& e ) {
+        // Oh no...
+        cerr << "\n =============================== " << endl;
+        cerr << "Uncaught std exception : \"" << e.what() << "\"" << endl;
+        cerr << " =============================== " << endl;
+        result = EXIT_FAILURE;
+    } catch ( ... ) {
+        cerr << "\n =============================== " << endl;
+        cerr << "PANIC! Unknown exception encountered!" << endl;
+        cerr << " =============================== " << endl;
+        result = EXIT_FAILURE;
     }
 
-  // No matter what, clean up:
-  cleanup();
+    // No matter what, clean up:
+    cleanup();
 
-  return result;
+    return result;
 }

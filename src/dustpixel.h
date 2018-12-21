@@ -55,66 +55,58 @@ const double Min_Dust_Range = Min_Dust_MaxRange / 255.; // Any range below this 
   * into another, the dust density must be added up at this length to have a
   * correct result.
   **/
-struct sDustPixel : public sMassPixel
-  {
+struct sDustPixel : public sMassPixel {
     double      range;    //!< range this dust sphere pixel reaches into space
     double      maxRange; //!< maximum range of the full dust sphere (aka dust sphere radius). Opacity then is range/maxRange.
-    sDustPixel *next;     //!< Chain start
+    sDustPixel* next;     //!< Chain start
 
-    explicit sDustPixel(): sMassPixel(), range(-1.0), maxRange(0.0), next(NULL)
-      { /* nothing to be done here */ }
+    explicit sDustPixel(): sMassPixel(), range( -1.0 ), maxRange( 0.0 ), next( NULL )
+    { /* nothing to be done here */ }
 
     /// @brief dtor that deletes the whole chain!
-    ~sDustPixel()
-      {
-        if (next)
-          delete next; // It will delete its next and that its next and so on.
-      } // End of dtor
+    ~sDustPixel() {
+        if ( next )
+            delete next; // It will delete its next and that its next and so on.
+    } // End of dtor
 
     /// @brief Invalidate it all
-    void invalidate()
-      {
+    void invalidate() {
         sMassPixel::invalidate();
         range    = -1.0;
         maxRange =  0.0;
-      }
+    }
 
     /** @brief set all values or invalidate all
       * To invalidate set @a aZ to anything not larger than zero
       * or either @a aRange or @a aMaxRange or both to anything
       * not larger than Min_Dust_Range
     **/
-    void setAll(double aZ, uint8_t aR, uint8_t aG, uint8_t aB, double aRange, double aMaxRange)
-      {
-        if ((aZ > 0.) && (aRange > Min_Dust_Range) && (aMaxRange > Min_Dust_MaxRange))
-          {
-            sMassPixel::setAll(aZ, aR, aG, aB);
+    void setAll( double aZ, uint8_t aR, uint8_t aG, uint8_t aB, double aRange, double aMaxRange ) {
+        if ( ( aZ > 0. ) && ( aRange > Min_Dust_Range ) && ( aMaxRange > Min_Dust_MaxRange ) ) {
+            sMassPixel::setAll( aZ, aR, aG, aB );
 
             range = aRange;
             maxRange = aMaxRange;
-          }
-        else
-          invalidate();
-      }
+        } else
+            invalidate();
+    }
 
     /// @brief Copy by construction, next is not copied
-    sDustPixel(sDustPixel &rhs): sMassPixel(rhs),
-      range(rhs.range), maxRange(rhs.maxRange), next(NULL)
-      {  }
+    sDustPixel( sDustPixel& rhs ): sMassPixel( rhs ),
+        range( rhs.range ), maxRange( rhs.maxRange ), next( NULL )
+    {  }
 
     /// @brief Copy by assignment, next is not changed
-    sDustPixel &operator=(sDustPixel &rhs)
-      {
-        if (&rhs != this)
-          {
-            sMassPixel::operator=(rhs);
+    sDustPixel& operator=( sDustPixel& rhs ) {
+        if ( &rhs != this ) {
+            sMassPixel::operator=( rhs );
             range    = rhs.range;
             maxRange = rhs.maxRange;
-          }
+        }
 
         return *this;
-      }
-  };
+    }
+};
 
 #endif // GRAVMAT_DUSTPIXEL_H_INCLUDED
 
